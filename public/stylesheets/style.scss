@@ -6,3 +6,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+.split {
+  display: flex;
+  justify-content: stretch;
+
+  > .col {
+    flex-basis: 100%;
+  }
+}

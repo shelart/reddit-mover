@@ -125,3 +125,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+/public/javascripts/bundle.js
+/public/stylesheets/style.css
+/public/stylesheets/style.css.map
