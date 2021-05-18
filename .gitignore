@@ -128,3 +128,5 @@ dist
 /public/javascripts/bundle.js
 /public/stylesheets/style.css
 /public/stylesheets/style.css.map
+
+/credentials.json
