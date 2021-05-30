@@ -1,6 +1,6 @@
 <template>
   <div class="col">
-    <login-form></login-form>
+    <login-form :id="id"></login-form>
   </div>
 </template>
 
@@ -9,6 +9,9 @@ import LoginForm from './login-form';
 export default {
   name: 'reddit-account-holder',
   components: {LoginForm},
+  props: {
+    id: String,
+  },
 }
 </script>
 

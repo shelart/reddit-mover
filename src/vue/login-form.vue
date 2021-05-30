@@ -1,25 +1,25 @@
 <template>
-  <form>
+  <form :id="id">
     <header>Reddit Account</header>
     <template v-if="session == null">
       <label>
         <span>Login:</span>
-        <input type="text" v-model="login" />
+        <input :name="`login-${id}`" type="text" v-model="login" />
       </label>
       <label>
         <span>Password:</span>
-        <input type="password" v-model="password" />
+        <input :name="`password-${id}`" type="password" v-model="password" />
       </label>
       <button type="submit" @click.prevent="signIn">Sign in</button>
     </template>
     <template v-else>
       <label>
         <span>Token:</span>
-        <input type="text" v-model="session.token" readonly />
+        <input :name="`session-token-${id}`" type="text" v-model="session.token" readonly autocomplete="off" />
       </label>
       <label>
         <span>Expires in:</span>
-        <input type="text" v-model="expires_in" readonly />
+        <input :name="`expires-in-${id}`" type="text" v-model="expires_in" readonly autocomplete="off" />
       </label>
       <button type="submit" @click.prevent="signOut">Sign out</button>
     </template>
@@ -31,6 +31,10 @@ import RedditService from '../reddit-service';
 
 export default {
   name: 'login-form',
+
+  props: {
+    id: String,
+  },
 
   data() {
     return {

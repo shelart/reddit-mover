@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="split">
-      <reddit-account-holder></reddit-account-holder>
-      <reddit-account-holder></reddit-account-holder>
+      <reddit-account-holder id="origin"></reddit-account-holder>
+      <reddit-account-holder id="target"></reddit-account-holder>
     </div>
   </div>
 </template>
