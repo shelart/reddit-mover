@@ -68,6 +68,8 @@ export default {
             this.signOut();
           }
         }, 1000);
+
+        this.$emit('input', session.token);
       });
     },
 
@@ -76,6 +78,8 @@ export default {
       clearInterval(this.expiresInIntervalID);
       this.expiresInIntervalID = null;
       this.expires_in = null;
+
+      this.$emit('input', null);
     },
   }
 }
