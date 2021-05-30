@@ -7,6 +7,7 @@ const sassMiddleware = require('node-sass-middleware');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
+const loginRouter = require('./routes/login');
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
+app.use('/api/login', loginRouter);
 
 module.exports = app;

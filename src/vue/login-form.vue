@@ -2,15 +2,8 @@
   <form :id="id">
     <header>Reddit Account</header>
     <template v-if="session === null">
-      <label>
-        <span>Login:</span>
-        <input :name="`login-${id}`" type="text" v-model="login" />
-      </label>
-      <label>
-        <span>Password:</span>
-        <input :name="`password-${id}`" type="password" v-model="password" />
-      </label>
-      <button type="submit" @click.prevent="signIn">Sign in</button>
+      <button v-if="!monitoringIntervalID" type="submit" @click.prevent="signIn">Sign in</button>
+      <p v-else>Awaiting login completion...</p>
     </template>
     <template v-else>
       <label>
@@ -38,9 +31,8 @@ export default {
 
   data() {
     return {
+      monitoringIntervalID: null,
       session: null,
-      login: "",
-      password: "",
       expires_in: null,
       expiresInIntervalID: null,
     };
@@ -48,28 +40,42 @@ export default {
 
   methods: {
     signIn() {
-      RedditService.signIn(this.login, this.password).then(session => {
-        console.log('Logged in. Session: ');
-        console.log(session);
-        session.expiry = new Date(session.expiry);
-        this.session = session;
-
-        this.expiresInIntervalID = setInterval(() => {
-          const leftSecondsOverall = Math.floor((this.session.expiry.getTime() - (new Date().getTime())) / 1000);
-          const leftHours = Math.floor(leftSecondsOverall / 3600);
-          const leftMinutes = Math.floor((leftSecondsOverall - leftHours * 3600) / 60);
-          const leftSeconds = leftSecondsOverall - leftHours * 3600 - leftMinutes * 60;
-
-          this.expires_in = leftHours.toString().padStart(2, '0') +
-              ':' + leftMinutes.toString().padStart(2, '0') +
-              ':' + leftSeconds.toString().padStart(2, '0');
-
-          if (leftSecondsOverall < 0) {
-            this.signOut();
-          }
+      RedditService.login.init().then(response => {
+        const redirectUrl = response.redirect_url;
+        const flowId = response.flow_id;
+        window.open(redirectUrl);
+        this.monitoringIntervalID = setInterval(() => {
+          this.monitorSignIn(flowId);
         }, 1000);
+      });
+    },
 
-        this.$emit('input', session.token);
+    monitorSignIn(flowId) {
+      RedditService.login.sessionForFlow(flowId).then(session => {
+        if (session) {
+          clearInterval(this.monitoringIntervalID);
+          this.monitoringIntervalID = null;
+
+          session.expiry = new Date(session.expiry);
+          this.session = session;
+
+          this.expiresInIntervalID = setInterval(() => {
+            const leftSecondsOverall = Math.floor((this.session.expiry.getTime() - (new Date().getTime())) / 1000);
+            const leftHours = Math.floor(leftSecondsOverall / 3600);
+            const leftMinutes = Math.floor((leftSecondsOverall - leftHours * 3600) / 60);
+            const leftSeconds = leftSecondsOverall - leftHours * 3600 - leftMinutes * 60;
+
+            this.expires_in = leftHours.toString().padStart(2, '0') +
+                ':' + leftMinutes.toString().padStart(2, '0') +
+                ':' + leftSeconds.toString().padStart(2, '0');
+
+            if (leftSecondsOverall < 0) {
+              this.signOut();
+            }
+          }, 1000);
+
+          this.$emit('input', session.token);
+        }
       });
     },
 
