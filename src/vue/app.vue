@@ -1,19 +1,15 @@
 <template>
   <div>
     <div class="split">
-      <div class="col">
-        <login-form></login-form>
-      </div>
-      <div class="col">
-        <login-form></login-form>
-      </div>
+      <reddit-account-holder></reddit-account-holder>
+      <reddit-account-holder></reddit-account-holder>
     </div>
   </div>
 </template>
 
 <script>
-import LoginForm from "./login-form";
+import RedditAccountHolder from './reddit-account-holder';
 export default {
-  components: {LoginForm}
+  components: {RedditAccountHolder}
 }
 </script>
