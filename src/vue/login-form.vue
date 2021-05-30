@@ -1,7 +1,7 @@
 <template>
   <form :id="id">
     <header>Reddit Account</header>
-    <template v-if="session == null">
+    <template v-if="session === null">
       <label>
         <span>Login:</span>
         <input :name="`login-${id}`" type="text" v-model="login" />
