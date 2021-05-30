@@ -7,10 +7,16 @@
 </template>
 
 <script>
+import RedditService from '../../reddit-service';
+
 export default {
   name: 'subreddits-subscribed',
   props: {
     token: String,
+  },
+
+  mounted() {
+    RedditService.subreddits.get(this.token);
   },
 }
 </script>
