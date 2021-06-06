@@ -24,8 +24,7 @@ export default {
 
     subreddits: {
         async get(token) {
-            let subreddits = await axios.get(`/api/subreddits/${token}`);
-            return subreddits;
+            return await axios.get(`/api/subreddits/${token}`);
         },
     }
 };
