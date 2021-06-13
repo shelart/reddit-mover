@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const getWithRetry = require('../src/axios-retry-wrapper');
 const appCredentials = require('../credentials.json');
 
 /* API */
@@ -17,15 +18,12 @@ router.get('/subreddits/:token', async (req, res) => {
         url += `?after=${after}`;
       }
 
-      console.log(`Request: ${url}`);
-      let response = await axios.get(url, {
+      let response = await getWithRetry(url, {
         headers: {
           'User-Agent': appCredentials['user-agent'],
           'Authorization': `Bearer ${token}`,
         },
       });
-      console.log('Got Reddit response:');
-      console.log(response);
 
       if (response.data.kind.toLowerCase() !== 'listing') {
         console.error('Returned page is not of kind Listing: ', response.data);
