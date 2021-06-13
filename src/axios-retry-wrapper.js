@@ -8,7 +8,7 @@ const getWithRetry = async (url, config) => {
         console.log(response);
         return response;
     } catch (e) {
-        if (e.errno.toUpperCase() === 'ETIMEDOUT') {
+        if (e.errno && e.errno.toUpperCase() === 'ETIMEDOUT') {
             console.warn('Timed out, retrying...');
             return await getWithRetry(url, config);
         } else {
