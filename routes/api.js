@@ -5,6 +5,29 @@ const getWithRetry = require('../src/axios-retry-wrapper');
 const appCredentials = require('../credentials.json');
 
 /* API */
+router.get('/username/:token', async (req, res) => {
+  const token = req.params.token;
+
+  try {
+    let url = 'https://oauth.reddit.com/api/v1/me';
+
+    let response = await getWithRetry(url, {
+      headers: {
+        'User-Agent': appCredentials['user-agent'],
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    res.send(response.data.name);
+  } catch (e) {
+    console.error('Exception on Reddit:');
+    console.log(e);
+
+    res.status(500);
+    res.send(e);
+  }
+});
+
 router.get('/subreddits/:token', async (req, res) => {
   const token = req.params.token;
 

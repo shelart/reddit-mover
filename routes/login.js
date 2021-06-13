@@ -17,7 +17,7 @@ router.post('/init', (req, res) => {
       'client_id': appCredentials['client-id'],
       'state': flowId,
       'redirect_uri': 'http://localhost:3000/api/login/callback',
-      'scope': 'mysubreddits',
+      'scope': 'identity mysubreddits',
     }),
     'flow_id': flowId,
   });

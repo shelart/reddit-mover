@@ -20,6 +20,10 @@ export default {
                 console.log(e);
             }
         },
+
+        async getUserName(token) {
+            return await axios.get(`/api/username/${token}`);
+        },
     },
 
     subreddits: {

@@ -1,6 +1,10 @@
 <template>
   <form :id="id">
-    <header>Reddit Account</header>
+    <header>
+      Reddit Account
+      <template v-if="username">({{username}})</template>
+      <template v-else-if="typeof username === typeof undefined">(getting username...)</template>
+    </header>
     <template v-if="session === null">
       <button v-if="!monitoringIntervalID" type="submit" @click.prevent="signIn">Sign in</button>
       <p v-else>Awaiting login completion...</p>
@@ -35,6 +39,7 @@ export default {
       session: null,
       expires_in: null,
       expiresInIntervalID: null,
+      username: null,
     };
   },
 
@@ -74,12 +79,22 @@ export default {
             }
           }, 1000);
 
+          this.getUserName();
+
           this.$emit('input', session.token);
         }
       });
     },
 
+    getUserName() {
+      this.username = undefined;
+      RedditService.login.getUserName(this.session.token).then(response => {
+        this.username = response.data;
+      });
+    },
+
     signOut() {
+      this.username = null;
       this.session = null;
       clearInterval(this.expiresInIntervalID);
       this.expiresInIntervalID = null;
