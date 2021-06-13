@@ -1,11 +1,13 @@
 <template>
   <div>
-    <header>Subscriptions</header>
+    <header>
+      Subscriptions
+      <button v-if="subreddits !== null" type="button" @click.prevent="reload">Reload</button>
+    </header>
 
     <p v-if="subreddits === null">Loading...</p>
     <div v-else-if="typeof subreddits === typeof undefined">
       <p>Error on loading.</p>
-      <button type="button" @click.prevent="reload">Reload</button>
     </div>
     <template v-else>
       <subreddit v-for="subreddit in subreddits" :key="subreddit.data.id" :value="subreddit"></subreddit>
