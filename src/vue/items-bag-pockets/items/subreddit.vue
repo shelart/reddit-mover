@@ -46,6 +46,7 @@ export default {
     width: 60px;
     display: block;
     margin-right: 10px;
+    align-self: center;
   }
 
   > article {
