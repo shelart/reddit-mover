@@ -1,14 +1,14 @@
 <template>
   <div :class="{box: true, 'is-ticked': isTicked}">
     <template v-if="value.kind === 't5'">
-      <div class="subreddit">
-        <input type="checkbox" v-model="isTicked" />
+      <label class="just-wrap subreddit" :for="`checkbox-${value.data.id}`">
+        <input type="checkbox" v-model="isTicked" :id="`checkbox-${value.data.id}`" />
         <img :src="value.image" alt="Subreddit's logo"/>
         <article>
           <header>{{value.data.title}}</header>
           <p>{{value.data.public_description}}</p>
         </article>
-      </div>
+      </label>
     </template>
 
     <template v-else>
