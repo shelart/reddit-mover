@@ -69,3 +69,14 @@ label {
     }
   }
 }
+
+.box {
+  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+
+  &.is-ticked {
+    background-color: #aaf;
+  }
+}
