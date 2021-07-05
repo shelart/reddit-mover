@@ -5,10 +5,21 @@
       <button v-if="subreddits !== null" type="button" @click.prevent="reload">Reload</button>
     </header>
 
-    <p v-if="subreddits === null">Loading...</p>
-    <div v-else-if="typeof subreddits === typeof undefined">
-      <p>Error on loading.</p>
-    </div>
+    <p v-if="!subreddits">
+      <template v-if="state">
+        Loading page {{state.page}}
+        <template v-if="state.attempt > 1">
+          (attempt # {{state.attempt}})
+        </template>
+        ...
+      </template>
+      <template v-else-if="errorText">
+        Error on loading: {{errorText}}
+      </template>
+      <template v-else>
+        Loading...
+      </template>
+    </p>
     <template v-else>
       <subreddit v-for="subreddit in subreddits" :key="subreddit.data.id" :value="subreddit"></subreddit>
     </template>
@@ -29,6 +40,10 @@ export default {
   data() {
     return {
       subreddits: null,
+      listingId: null,
+      state: null,
+      errorText: null,
+      intervalID: null,
     }
   },
 
@@ -39,16 +54,34 @@ export default {
   methods: {
     async reload() {
       this.subreddits = null;
-      try {
-        const response = await RedditService.subreddits.get(this.token);
-        if (response.data) {
-          this.subreddits = response.data;
-        } else {
-          this.subreddits = undefined;
-        }
-      } catch (e) {
-        this.subreddits = undefined;
+      this.listingId = (await RedditService.subreddits.invokeGet(this.token)).data;
+      this.intervalID = setInterval(() => {
+        this.refreshListingState();
+      }, 1000);
+    },
+
+    async refreshListingState() {
+      const stateOfListing = await RedditService.listings.getState(this.listingId);
+      if (!stateOfListing.data) {
+        clearInterval(this.intervalID);
+        this.intervalID = null;
+        this.errorText = 'Failed to refresh the state of loading!!!';
+        return;
       }
+      if (stateOfListing.data.error) {
+        clearInterval(this.intervalID);
+        this.intervalID = null;
+        this.errorText = stateOfListing.data.error;
+        return;
+      }
+      if (stateOfListing.data.state) {
+        this.state = stateOfListing.data.state;
+        return;
+      }
+
+      clearInterval(this.intervalID);
+      this.intervalID = null;
+      this.subreddits = stateOfListing.data.result;
     },
   }
 }

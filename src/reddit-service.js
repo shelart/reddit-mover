@@ -27,8 +27,14 @@ export default {
     },
 
     subreddits: {
-        async get(token) {
+        async invokeGet(token) {
             return await axios.get(`/api/subreddits/${token}`);
         },
-    }
+    },
+
+    listings: {
+        async getState(id) {
+            return await axios.get(`/api/listing/${id}`);
+        },
+    },
 };

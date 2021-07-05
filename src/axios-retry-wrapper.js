@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const getWithRetry = async (url, config) => {
+const getWithRetry = async (url, config, onRetry = () => {}) => {
     try {
         console.log(`Request: ${url}`);
         let response = await axios.get(url, config);
@@ -10,6 +10,7 @@ const getWithRetry = async (url, config) => {
     } catch (e) {
         if (e.errno && e.errno.toUpperCase() === 'ETIMEDOUT') {
             console.warn('Timed out, retrying...');
+            onRetry();
             return await getWithRetry(url, config);
         } else {
             console.error('Exception on Reddit:');
