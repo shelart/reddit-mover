@@ -54,6 +54,8 @@ export default {
   methods: {
     async reload() {
       this.subreddits = null;
+      this.state = null;
+      this.errorText = null;
       this.listingId = (await RedditService.subreddits.invokeGet(this.token)).data;
       this.intervalID = setInterval(() => {
         this.refreshListingState();

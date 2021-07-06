@@ -11,7 +11,7 @@ const getWithRetry = async (url, config, onRetry = () => {}) => {
         if (e.errno && e.errno.toUpperCase() === 'ETIMEDOUT') {
             console.warn('Timed out, retrying...');
             onRetry();
-            return await getWithRetry(url, config);
+            return await getWithRetry(url, config, onRetry);
         } else {
             console.error('Exception on Reddit:');
             console.log(e);
