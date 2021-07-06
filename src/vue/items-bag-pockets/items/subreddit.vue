@@ -5,7 +5,10 @@
         <input type="checkbox" v-model="isTicked" :id="`checkbox-${value.data.id}`" />
         <img :src="value.image" alt="Subreddit's logo"/>
         <article>
-          <header>{{value.data.title}}</header>
+          <header>
+            <h1>{{value.data.title}}</h1>
+            <h2>{{value.data.display_name_prefixed}}</h2>
+          </header>
           <p>{{value.data.public_description}}</p>
         </article>
       </label>
@@ -51,8 +54,19 @@ export default {
 
   > article {
     > header {
-      font-weight: bold;
       margin-bottom: 10px;
+
+      > h1 {
+        font-weight: bold;
+        font-size: 18px;
+        margin: 0;
+      }
+
+      > h2 {
+        font-weight: bold;
+        font-size: 16px;
+        margin: 0;
+      }
     }
   }
 }
