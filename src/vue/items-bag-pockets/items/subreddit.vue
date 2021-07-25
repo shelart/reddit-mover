@@ -2,7 +2,11 @@
   <div :class="{box: true, 'is-ticked': isTicked}">
     <template v-if="value.kind === 't5'">
       <label class="just-wrap subreddit" :for="`checkbox-${value.data.id}`">
-        <input type="checkbox" v-model="isTicked" :id="`checkbox-${value.data.id}`" />
+        <input type="checkbox"
+               v-model="isTicked"
+               :id="`checkbox-${value.data.id}`"
+               @change="$emit('change', $event.target.checked)"
+        />
         <img :src="value.image" alt="Subreddit's logo"/>
         <article>
           <header>

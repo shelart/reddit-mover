@@ -21,7 +21,17 @@
       </template>
     </p>
     <template v-else>
-      <subreddit v-for="subreddit in subreddits" :key="subreddit.data.id" :value="subreddit"></subreddit>
+      <subreddit v-for="subreddit in subreddits"
+                 :key="subreddit.data.id"
+                 :value="subreddit"
+                 @change="onSubredditCheckboxChanged(subreddit.data.id, $event)">
+      </subreddit>
+
+      <div id="panel-bottom">
+        <button v-if="Object.keys(tickedSubreddits).length">
+          Move {{Object.keys(tickedSubreddits).length}} subreddit(s)
+        </button>
+      </div>
     </template>
   </div>
 </template>
@@ -44,6 +54,7 @@ export default {
       state: null,
       errorText: null,
       intervalID: null,
+      tickedSubreddits: {},
     }
   },
 
@@ -56,6 +67,7 @@ export default {
       this.subreddits = null;
       this.state = null;
       this.errorText = null;
+      this.tickedSubreddits = {};
       this.listingId = (await RedditService.subreddits.invokeGet(this.token)).data;
       this.intervalID = setInterval(() => {
         this.refreshListingState();
@@ -85,6 +97,14 @@ export default {
       this.intervalID = null;
       this.subreddits = stateOfListing.data.result;
     },
+
+    onSubredditCheckboxChanged(id, checked) {
+      if (checked) {
+        this.$set(this.tickedSubreddits, id, checked);
+      } else {
+        this.$delete(this.tickedSubreddits, id);
+      }
+    }
   }
 }
 </script>
