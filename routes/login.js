@@ -114,4 +114,40 @@ router.get('/monitor/:flowId', (req, res) => {
   }
 });
 
+/* This will be called by the frontend page to refresh the expired token. */
+router.get('/refresh/:userNum/:refreshToken', async (req, res) => {
+  const userNum = req.params.userNum;
+  const refreshToken = req.params.refreshToken;
+
+  try {
+    let response = await axios.post('https://www.reddit.com/api/v1/access_token', qs.stringify({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }), {
+      headers: {
+        'User-Agent': appCredentials['user-agent'],
+      },
+      auth: {
+        username: appCredentials['client-id'],
+        password: appCredentials['client-secret'],
+      },
+    });
+
+    const tokenJSON = JSON.parse(JSON.stringify(response.data));
+    const expiry = new Date();
+    expiry.setSeconds(expiry.getSeconds() + parseInt(tokenJSON.expires_in, 10));
+    tokenJSON.expires_at = expiry.getTime();
+
+    // Store the permanent credentials
+    const pathToCredFile = path.dirname(__dirname) + path.sep + `user-${userNum}-credentials.json`;
+    fs.writeFileSync(pathToCredFile, JSON.stringify(tokenJSON));
+
+    res.send(tokenJSON);
+  } catch (e) {
+    res.status(500);
+    console.error(e);
+    res.send('Unexpected error occurred!');
+  }
+});
+
 module.exports = router;

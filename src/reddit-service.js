@@ -24,6 +24,11 @@ export default {
         async getUserName(token) {
             return await axios.get(`/api/username/${token}`);
         },
+
+        async refreshAccessTokenByRefreshToken(userNum, refreshToken) {
+            const response = await axios.get(`/api/login/refresh/${userNum}/${refreshToken}`);
+            return response.data;
+        },
     },
 
     subreddits: {
