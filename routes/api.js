@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const getWithRetry = require('../src/axios-retry-wrapper');
-const appCredentials = require('../credentials.json');
+const appCredentials = require('../app-credentials.json');
 const listing = require('./listing');
 
 /* API */

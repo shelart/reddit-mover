@@ -12,7 +12,7 @@
     <template v-else>
       <label>
         <span>Token:</span>
-        <input :name="`session-token-${id}`" type="text" v-model="session.token" readonly autocomplete="off" />
+        <input :name="`session-token-${id}`" type="text" v-model="session.access_token" readonly autocomplete="off" />
       </label>
       <label>
         <span>Expires in:</span>
@@ -45,7 +45,7 @@ export default {
 
   methods: {
     signIn() {
-      RedditService.login.init().then(response => {
+      RedditService.login.init(this.id).then(response => {
         const redirectUrl = response.redirect_url;
         const flowId = response.flow_id;
         window.open(redirectUrl);
@@ -61,7 +61,7 @@ export default {
           clearInterval(this.monitoringIntervalID);
           this.monitoringIntervalID = null;
 
-          session.expiry = new Date(session.expiry);
+          session.expiry = new Date(session.expires_at);
           this.session = session;
 
           this.expiresInIntervalID = setInterval(() => {
@@ -81,14 +81,14 @@ export default {
 
           this.getUserName();
 
-          this.$emit('input', session.token);
+          this.$emit('input', session.access_token);
         }
       });
     },
 
     getUserName() {
       this.username = undefined;
-      RedditService.login.getUserName(this.session.token).then(response => {
+      RedditService.login.getUserName(this.session.access_token).then(response => {
         this.username = response.data;
       });
     },
