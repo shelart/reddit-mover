@@ -2,6 +2,11 @@ import axios from 'axios';
 
 export default {
     login: {
+        async load(userNum) {
+            const response = await axios.get(`/api/login/read/${userNum}`);
+            return response.data;
+        },
+
         async init(userNum) {
             let grantUri = await axios.post('/api/login/init/' + userNum);
             return grantUri.data;

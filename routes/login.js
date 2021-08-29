@@ -12,6 +12,23 @@ const REDIRECT_URI = 'http://localhost:3000/api/login/callback';
 /* In-memory map of pending authentication requests. */
 const loginFlows = {};
 
+
+/* To be called on mount. */
+router.get('/read/:userNum', async (req, res) => {
+  const userNum = req.params.userNum;
+  const pathToCredFile = path.dirname(__dirname) + path.sep + `user-${userNum}-credentials.json`;
+
+  try {
+    const sessionData = fs.readFileSync(pathToCredFile);
+    const tokenJSON = JSON.parse(sessionData);
+    res.send(tokenJSON);
+  } catch (e) {
+    res.status(500);
+    console.error(e);
+    res.send('Unexpected error occurred!');
+  }
+});
+
 /* To be called by 'Sign In' button, returns an URI to redirect the browser to. */
 router.post('/init/:userNum', (req, res) => {
   const userNum = req.params.userNum;

@@ -43,7 +43,22 @@ export default {
     };
   },
 
+  mounted() {
+    this.load();
+  },
+
   methods: {
+    load() {
+      try {
+        RedditService.login.load(this.id).then(session => {
+          this._processSessionData(session);
+          this.getUserName();
+        });
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+
     signIn() {
       RedditService.login.init(this.id).then(response => {
         const redirectUrl = response.redirect_url;
