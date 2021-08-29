@@ -30,6 +30,24 @@ router.post('/init/:userNum', (req, res) => {
   loginFlows[flowId] = {state: 'init', userNum};
 });
 
+const handleToken = function (response, userNum, flowId) {
+  const tokenJSON = JSON.parse(JSON.stringify(response.data));
+  const expiry = new Date();
+  expiry.setSeconds(expiry.getSeconds() + parseInt(tokenJSON.expires_in, 10));
+  tokenJSON.expires_at = expiry.getTime();
+
+  // Store the permanent credentials
+  const pathToCredFile = path.dirname(__dirname) + path.sep + `user-${userNum}-credentials.json`;
+  fs.writeFileSync(pathToCredFile, JSON.stringify(tokenJSON));
+
+  if (flowId) {
+    loginFlows[flowId].state = 'finished';
+    loginFlows[flowId].token = tokenJSON;
+  }
+
+  return tokenJSON;
+};
+
 /* Here the browser will be redirected by Reddit after granted access, returns an URI to redirect the browser to. */
 router.get('/callback', async (req, res) => {
   let error = req.query.error;
@@ -74,18 +92,7 @@ router.get('/callback', async (req, res) => {
       },
     });
 
-    const tokenJSON = JSON.parse(JSON.stringify(response.data));
-    const expiry = new Date();
-    expiry.setSeconds(expiry.getSeconds() + parseInt(tokenJSON.expires_in, 10));
-    tokenJSON.expires_at = expiry.getTime();
-
-    // Store the permanent credentials
-    const userNum = loginFlows[flowId].userNum;
-    const pathToCredFile = path.dirname(__dirname) + path.sep + `user-${userNum}-credentials.json`;
-    fs.writeFileSync(pathToCredFile, JSON.stringify(tokenJSON));
-
-    loginFlows[flowId].state = 'finished';
-    loginFlows[flowId].token = tokenJSON;
+    handleToken(response, loginFlows[flowId].userNum, flowId);
 
     const resolvedPath = path.dirname(__dirname) + path.sep + 'views' + path.sep + 'login-callback-ok.html';
     res.sendFile(resolvedPath);
@@ -133,14 +140,7 @@ router.get('/refresh/:userNum/:refreshToken', async (req, res) => {
       },
     });
 
-    const tokenJSON = JSON.parse(JSON.stringify(response.data));
-    const expiry = new Date();
-    expiry.setSeconds(expiry.getSeconds() + parseInt(tokenJSON.expires_in, 10));
-    tokenJSON.expires_at = expiry.getTime();
-
-    // Store the permanent credentials
-    const pathToCredFile = path.dirname(__dirname) + path.sep + `user-${userNum}-credentials.json`;
-    fs.writeFileSync(pathToCredFile, JSON.stringify(tokenJSON));
+    const tokenJSON = handleToken(response, userNum, null);
 
     res.send(tokenJSON);
   } catch (e) {
