@@ -1,7 +1,7 @@
 <template>
   <div class="col">
     <login-form :id="id" v-model="token"></login-form>
-    <items-bag v-if="token !== null" :token="token"></items-bag>
+    <items-bag v-if="token !== null" :token="token" @move="moveItems($event)"></items-bag>
   </div>
 </template>
 
@@ -19,6 +19,13 @@ export default {
       token: null,
     }
   },
+
+  methods: {
+    moveItems($event) {
+      console.log('Move items: ', $event);
+      this.$emit('move', $event);
+    },
+  }
 }
 </script>
 

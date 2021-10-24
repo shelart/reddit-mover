@@ -8,7 +8,8 @@
       </select>
     </label>
 
-    <subreddits-subscribed v-if="pocket === 'subreddits-subscribed'" :token="token"></subreddits-subscribed>
+    <subreddits-subscribed v-if="pocket === 'subreddits-subscribed'" :token="token"
+      @move="moveSubreddits($event)"></subreddits-subscribed>
   </div>
 </template>
 
@@ -27,6 +28,13 @@ export default {
       pocket: null,
     }
   },
+
+  methods: {
+    moveSubreddits($event) {
+      console.log('Move subreddits: ', $event);
+      this.$emit('move', $event);
+    },
+  }
 }
 </script>
 

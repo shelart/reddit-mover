@@ -28,7 +28,7 @@
       </subreddit>
 
       <div id="panel-bottom">
-        <button v-if="Object.keys(tickedSubreddits).length">
+        <button v-if="Object.keys(tickedSubreddits).length" @click="move()">
           Move {{Object.keys(tickedSubreddits).length}} subreddit(s)
         </button>
       </div>
@@ -104,7 +104,17 @@ export default {
       } else {
         this.$delete(this.tickedSubreddits, id);
       }
-    }
+    },
+
+    move() {
+      const ids = Object.keys(this.tickedSubreddits); //.join(',');
+      console.log('Moving: ', ids);
+      this.$emit('move', {
+        type: 'subreddits',
+        data: ids,
+        origin: this.token,
+      });
+    },
   }
 }
 </script>
