@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="split">
-      <reddit-account-holder id="origin" @move="moveFromOrigin($event)"></reddit-account-holder>
-      <reddit-account-holder id="target"></reddit-account-holder>
+      <reddit-account-holder id="origin" ref="origin" @move="moveFromOrigin($event)"></reddit-account-holder>
+      <reddit-account-holder id="target" ref="target"></reddit-account-holder>
     </div>
     <progress-locker ref="progress"
       :title="progress.title"
@@ -15,6 +15,10 @@
 <script>
 import RedditAccountHolder from './reddit-account-holder';
 import ProgressLocker from './progress/locker';
+import RedditItemsMoveService from '../reddit-items-move-service';
+import MockSubredditsMover from '../reddit-items-movers/MockSubredditsMover';
+import EventBus from '../event-bus';
+
 export default {
   components: {RedditAccountHolder, ProgressLocker},
 
@@ -39,15 +43,29 @@ export default {
           this.progress.current = 0;
           this.progress.total = $event.data.length;
 
-          let intervalID;
-          const stepUp = () => {
-            this.progress.current++;
-            if (this.progress.current >= this.progress.total) {
-              this.$refs.progress.hide();
-              clearInterval(intervalID);
-            }
-          };
-          intervalID = setInterval(stepUp, 1000);
+          RedditItemsMoveService.move(
+              this.$refs.origin.token,
+              this.$refs.target.token,
+              MockSubredditsMover,
+              $event.data,
+              subResult => {
+                console.log('Sub-result: ', subResult);
+
+                // Delete successfully moved ones from the origin, display them in the target
+                EventBus.$emit('movedSubreddits', {
+                  data: Object.entries(subResult)
+                      .filter(([id, result], _, _2) => result)
+                      .map(([id, _], _2, _3) => id),
+                  origin: this.$refs.origin.token,
+                  target: this.$refs.target.token,
+                });
+
+                this.progress.current += Object.keys(subResult).length;
+                if (this.progress.current >= this.progress.total) {
+                  this.$refs.progress.hide();
+                }
+              }
+          );
         }
       }
     },

@@ -20,6 +20,11 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader'
             },
+            // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader'
+            },
             // this will apply to both plain `.css` files
             // AND `<style>` blocks in `.vue` files
             {
@@ -48,6 +53,6 @@ module.exports = {
         alias: {
             vue$: "vue/dist/vue.runtime.esm.js",
         },
-        extensions: ["*", ".js", ".vue", ".json"],
+        extensions: ["*", ".ts", ".tsx", ".js", ".vue", ".json"],
     },
 };

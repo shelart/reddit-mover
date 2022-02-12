@@ -4,6 +4,7 @@
       <label class="just-wrap subreddit" :for="`checkbox-${value.data.id}`">
         <input type="checkbox"
                v-model="isTicked"
+               ref="checkbox"
                :id="`checkbox-${value.data.id}`"
                @change="$emit('change', $event.target.checked)"
         />
@@ -25,6 +26,8 @@
 </template>
 
 <script>
+import EventBus from '../../../event-bus';
+
 export default {
   name: 'subreddit',
   props: {
@@ -34,6 +37,23 @@ export default {
     return {
       isTicked: false,
     };
+  },
+  created() {
+    EventBus.$on('uncheckSubreddit', this.uncheck);
+  },
+  destroyed() {
+    EventBus.$off('uncheckSubreddit', this.uncheck);
+  },
+  methods: {
+    uncheck(id) {
+      if (this.value.data.name === id) {
+        //console.log(`On uncheckSubreddit for ${id}`);
+        this.$refs.checkbox.checked = false;
+        this.isTicked = false;
+        //console.log('Emitting change for: ', this.$refs.checkbox);
+        this.$emit('change', this.$refs.checkbox.checked);
+      }
+    },
   },
 }
 </script>

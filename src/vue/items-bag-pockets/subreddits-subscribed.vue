@@ -24,7 +24,7 @@
       <subreddit v-for="subreddit in subreddits"
                  :key="subreddit.data.id"
                  :value="subreddit"
-                 @change="onSubredditCheckboxChanged(subreddit.data.id, $event)">
+                 @change="onSubredditCheckboxChanged(subreddit.data.name, $event)">
       </subreddit>
 
       <div id="panel-bottom">
@@ -39,6 +39,7 @@
 <script>
 import RedditService from '../../reddit-service';
 import Subreddit from './items/subreddit';
+import EventBus from '../../event-bus';
 
 export default {
   name: 'subreddits-subscribed',
@@ -60,6 +61,16 @@ export default {
 
   async mounted() {
     await this.reload();
+  },
+
+  created() {
+    EventBus.$on('movedSubreddits', this.onMoved);
+    EventBus.$on('addSubredditsToTarget', this.addSubredditsToTarget);
+  },
+
+  destroyed() {
+    EventBus.$off('movedSubreddits', this.onMoved);
+    EventBus.$off('addSubredditsToTarget', this.addSubredditsToTarget);
   },
 
   methods: {
@@ -107,13 +118,46 @@ export default {
     },
 
     move() {
-      const ids = Object.keys(this.tickedSubreddits); //.join(',');
+      const ids = Object.keys(this.tickedSubreddits);
       console.log('Moving: ', ids);
       this.$emit('move', {
         type: 'subreddits',
         data: ids,
         origin: this.token,
       });
+    },
+
+    onMoved($event) {
+      if (this.token === $event.origin) {
+        // This is the origin subreddits view.
+        for (const id of $event.data) {
+          EventBus.$emit('uncheckSubreddit', id);
+        }
+        // Pass the successfully moved subreddits to the target.
+        const toMove = this.subreddits.filter(subreddit => $event.data.includes(subreddit.data.name));
+        console.log('toMove = ', toMove);
+        EventBus.$emit('addSubredditsToTarget', {
+          toMove,
+          target: $event.target,
+        });
+        // Delete the successfully moved subreddits.
+        for (const id of $event.data) {
+          const idxToDelete = this.subreddits.findIndex(subreddit => subreddit.data.name === id);
+          if (idxToDelete === -1) {
+            continue;
+          }
+          this.subreddits.splice(idxToDelete, 1);
+        }
+      }
+    },
+
+    addSubredditsToTarget($event) {
+      if (this.token === $event.target) {
+        // This is the target subreddits view.
+        for (const subreddit of $event.toMove) {
+          this.subreddits.push(subreddit);
+        }
+      }
     },
   }
 }

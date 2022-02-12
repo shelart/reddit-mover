@@ -40,6 +40,11 @@ export default {
         async invokeGet(token) {
             return await axios.get(`/api/subreddits/${token}`);
         },
+
+        async subscribe(token, ids) {
+            const idsCommaSeparated = ids.join(',');
+            return await axios.post(`/api/subscriptions/subscribe/${token}/${idsCommaSeparated}`);
+        },
     },
 
     listings: {
