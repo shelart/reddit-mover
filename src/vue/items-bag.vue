@@ -8,7 +8,7 @@
       </select>
     </label>
 
-    <subreddits-subscribed v-if="pocket === 'subreddits-subscribed'" :token="token"
+    <subreddits-subscribed v-if="pocket === 'subreddits-subscribed'" :token="token" :checkable="checkable"
       @move="moveSubreddits($event)"></subreddits-subscribed>
   </div>
 </template>
@@ -21,6 +21,7 @@ export default {
 
   props: {
     token: String,
+    checkable: Boolean,
   },
 
   data() {

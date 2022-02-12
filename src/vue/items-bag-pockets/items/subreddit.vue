@@ -2,7 +2,8 @@
   <div :class="{box: true, 'is-ticked': isTicked}">
     <template v-if="value.kind === 't5'">
       <label class="just-wrap subreddit" :for="`checkbox-${value.data.id}`">
-        <input type="checkbox"
+        <input v-if="checkable"
+               type="checkbox"
                v-model="isTicked"
                ref="checkbox"
                :id="`checkbox-${value.data.id}`"
@@ -32,6 +33,7 @@ export default {
   name: 'subreddit',
   props: {
     value: Object,
+    checkable: Boolean,
   },
   data() {
     return {

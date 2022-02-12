@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="split">
-      <reddit-account-holder id="origin" ref="origin" @move="moveFromOrigin($event)"></reddit-account-holder>
-      <reddit-account-holder id="target" ref="target"></reddit-account-holder>
+      <reddit-account-holder id="origin" ref="origin" :checkable="true" @move="moveFromOrigin($event)"></reddit-account-holder>
+      <reddit-account-holder id="target" ref="target" :checkable="false"></reddit-account-holder>
     </div>
     <progress-locker ref="progress"
       :title="progress.title"

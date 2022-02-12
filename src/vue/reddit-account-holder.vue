@@ -1,7 +1,7 @@
 <template>
   <div class="col">
     <login-form :id="id" v-model="token"></login-form>
-    <items-bag v-if="token !== null" :token="token" @move="moveItems($event)"></items-bag>
+    <items-bag v-if="token !== null" :token="token" :checkable="checkable" @move="moveItems($event)"></items-bag>
   </div>
 </template>
 
@@ -13,6 +13,7 @@ export default {
   components: {ItemsBag, LoginForm},
   props: {
     id: String,
+    checkable: Boolean,
   },
   data() {
     return {

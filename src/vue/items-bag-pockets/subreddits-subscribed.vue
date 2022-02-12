@@ -24,10 +24,11 @@
       <subreddit v-for="subreddit in subreddits"
                  :key="subreddit.data.id"
                  :value="subreddit"
+                 :checkable="checkable"
                  @change="onSubredditCheckboxChanged(subreddit.data.name, $event)">
       </subreddit>
 
-      <div id="panel-bottom">
+      <div v-if="checkable" id="panel-bottom">
         <button v-if="Object.keys(tickedSubreddits).length" @click="move()">
           Move {{Object.keys(tickedSubreddits).length}} subreddit(s)
         </button>
@@ -46,6 +47,7 @@ export default {
   components: {Subreddit},
   props: {
     token: String,
+    checkable: Boolean,
   },
 
   data() {
