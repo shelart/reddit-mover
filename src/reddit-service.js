@@ -45,6 +45,11 @@ export default {
             const idsCommaSeparated = ids.join(',');
             return await axios.post(`/api/subscriptions/subscribe/${token}/${idsCommaSeparated}`);
         },
+
+        async unsubscribe(token, ids) {
+            const idsCommaSeparated = ids.join(',');
+            return await axios.post(`/api/subscriptions/unsubscribe/${token}/${idsCommaSeparated}`);
+        },
     },
 
     listings: {

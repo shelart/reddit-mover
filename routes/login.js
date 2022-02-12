@@ -39,7 +39,7 @@ router.post('/init/:userNum', (req, res) => {
       'client_id': appCredentials['client-id'],
       'state': flowId,
       'redirect_uri': REDIRECT_URI,
-      'scope': 'identity mysubreddits',
+      'scope': 'identity mysubreddits subscribe',
       'duration': 'permanent',
     }),
     'flow_id': flowId,

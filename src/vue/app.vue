@@ -16,7 +16,7 @@
 import RedditAccountHolder from './reddit-account-holder';
 import ProgressLocker from './progress/locker';
 import RedditItemsMoveService from '../reddit-items-move-service';
-import MockSubredditsMover from '../reddit-items-movers/MockSubredditsMover';
+import SubredditsMover from '../reddit-items-movers/SubredditsMover';
 import EventBus from '../event-bus';
 
 export default {
@@ -37,7 +37,6 @@ export default {
       console.log('Move from origin: ', $event);
       switch ($event.type) {
         case 'subreddits': {
-          // TODO: real move
           this.$refs.progress.show();
           this.progress.title = 'Moving subreddits...';
           this.progress.current = 0;
@@ -46,7 +45,7 @@ export default {
           RedditItemsMoveService.move(
               this.$refs.origin.token,
               this.$refs.target.token,
-              MockSubredditsMover,
+              SubredditsMover,
               $event.data,
               subResult => {
                 console.log('Sub-result: ', subResult);

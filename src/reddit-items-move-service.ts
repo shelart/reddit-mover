@@ -27,7 +27,12 @@ export default {
                 .filter(([id, result], _, _2) => result)
                 .map(([id, _], _2, _3) => id);
             console.log('toDeleteFromOrigin = ', toDeleteFromOrigin);
-            const deletedFromOrigin = await mover.delete(originToken, toDeleteFromOrigin);
+            let deletedFromOrigin;
+            if (toDeleteFromOrigin.length) {
+                deletedFromOrigin = await mover.delete(originToken, toDeleteFromOrigin);
+            } else {
+                deletedFromOrigin = {};
+            }
             console.log('deletedFromOrigin = ', deletedFromOrigin);
 
             const subResult: { [id: string] : boolean } = {};
