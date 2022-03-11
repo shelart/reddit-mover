@@ -123,7 +123,17 @@ export default {
       this.savedPosts = stateOfListing.data.result;
       this.foundSubreddits = [...new Set(this.savedPosts
           .map(savedPost => savedPost.data.subreddit_name_prefixed))
-      ].sort();
+      ].sort((a, b) => {
+        const aTransformed = a.toLowerCase();
+        const bTransformed = b.toLowerCase();
+        if (aTransformed < bTransformed) {
+          return -1;
+        }
+        if (aTransformed > bTransformed) {
+          return 1;
+        }
+        return 0;
+      });
     },
 
     onSavedPostCheckboxChanged(id, checked) {
