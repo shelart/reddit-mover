@@ -109,6 +109,7 @@ export default {
       this.username = undefined;
       RedditService.login.getUserName(this.session.access_token).then(response => {
         this.username = response.data;
+        this.$emit('userNameMadeAvailable', this.username);
       });
     },
 

@@ -52,6 +52,12 @@ export default {
         },
     },
 
+    savedPosts: {
+        async invokeGet(token) {
+            return await axios.get(`/api/savedPosts/${token}`);
+        },
+    },
+
     listings: {
         async getState(id) {
             return await axios.get(`/api/listing/${id}`);

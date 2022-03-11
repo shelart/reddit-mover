@@ -1,7 +1,13 @@
 <template>
   <div class="col">
-    <login-form :id="id" v-model="token"></login-form>
-    <items-bag v-if="token !== null" :token="token" :checkable="checkable" @move="moveItems($event)"></items-bag>
+    <login-form :id="id"
+                v-model="token"
+                @userNameMadeAvailable="userNameAvailable = true"></login-form>
+    <items-bag v-if="token !== null"
+               :token="token"
+               :user-name-available="userNameAvailable"
+               :checkable="checkable"
+               @move="moveItems($event)"></items-bag>
   </div>
 </template>
 
@@ -18,6 +24,7 @@ export default {
   data() {
     return {
       token: null,
+      userNameAvailable: false,
     }
   },
 
