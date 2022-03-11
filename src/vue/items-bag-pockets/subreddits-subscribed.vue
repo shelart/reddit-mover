@@ -28,7 +28,7 @@
                  @change="onSubredditCheckboxChanged(subreddit.data.name, $event)">
       </subreddit>
 
-      <div v-if="checkable" id="panel-bottom">
+      <div v-if="checkable" class="panel-bottom">
         <button v-if="Object.keys(tickedSubreddits).length" @click="move()">
           Move {{Object.keys(tickedSubreddits).length}} subreddit(s)
         </button>
