@@ -3,6 +3,15 @@
     <header>
       Saved Posts
       <button v-if="savedPosts !== null" type="button" @click.prevent="reload">Reload</button>
+      <select v-if="savedPosts !== null"
+              v-model="filterBySubreddit"
+      >
+        <option :value="null">(all subreddits)</option>
+        <option v-for="subreddit in foundSubreddits"
+                :key="subreddit"
+                :value="subreddit"
+        >{{subreddit}}</option>
+      </select>
     </header>
 
     <p v-if="!savedPosts">
@@ -23,6 +32,7 @@
     <template v-else>
       <post v-for="savedPost in savedPosts"
                  :key="savedPost.data.id"
+                 v-if="!filterBySubreddit || (savedPost.data.subreddit_name_prefixed === filterBySubreddit)"
                  :value="savedPost"
                  :checkable="checkable"
                  @change="onSavedPostCheckboxChanged(savedPost.data.name, $event)">
@@ -52,6 +62,8 @@ export default {
 
   data() {
     return {
+      filterBySubreddit: null,
+      foundSubreddits: [],
       savedPosts: null,
       listingId: null,
       state: null,
@@ -109,6 +121,9 @@ export default {
       clearInterval(this.intervalID);
       this.intervalID = null;
       this.savedPosts = stateOfListing.data.result;
+      this.foundSubreddits = [...new Set(this.savedPosts
+          .map(savedPost => savedPost.data.subreddit_name_prefixed))
+      ].sort();
     },
 
     onSavedPostCheckboxChanged(id, checked) {
