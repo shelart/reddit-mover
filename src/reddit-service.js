@@ -56,6 +56,14 @@ export default {
         async invokeGet(token) {
             return await axios.get(`/api/savedPosts/${token}`);
         },
+
+        async save(token, id) {
+            return await axios.post(`/api/saved/save/${token}/${id}`);
+        },
+
+        async unSave(token, id) {
+            return await axios.post(`/api/saved/unSave/${token}/${id}`);
+        },
     },
 
     listings: {

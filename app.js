@@ -8,6 +8,7 @@ const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const loginRouter = require('./routes/login');
 const subscribeRouter = require('./routes/reddit-subscriptions');
+const savedRouter = require('./routes/reddit-saved');
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/subscriptions', subscribeRouter);
+app.use('/api/saved', savedRouter);
 
 module.exports = app;
