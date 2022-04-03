@@ -67,51 +67,42 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .post {
   position: relative;
-
-  > input[type="checkbox"] {
-    float: left;
-    display: block;
-    margin: 13px 5px;
-    clear: left;
-  }
-
-  > article {
-    display: flex;
-    justify-content: space-between;
-
-    > .content {
-      > header {
-        margin-bottom: 10px;
-
-        > h1 {
-          font-weight: bold;
-          font-size: 18px;
-          margin: 0;
-        }
-
-        > h2 {
-          font-weight: bold;
-          font-size: 16px;
-          margin: 0;
-        }
-
-        > h3 {
-          font-weight: normal;
-          font-size: 14px;
-          margin: 0;
-        }
-      }
-    }
-
-    > img {
-      max-width: 60px;
-      display: block;
-      margin: 0 10px;
-      align-self: center;
-    }
-  }
+}
+.post > input[type="checkbox"] {
+  float: left;
+  display: block;
+  margin: 13px 5px;
+  clear: left;
+}
+.post > article {
+  display: flex;
+  justify-content: space-between;
+}
+.post > article > .content > header {
+  margin-bottom: 10px;
+}
+.post > article > .content > header > h1 {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0;
+}
+.post > article > .content > header > h2 {
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0;
+}
+.post > article > .content > header > h3 {
+  font-weight: normal;
+  font-size: 14px;
+  margin: 0;
+}
+.post > article > img {
+  max-width: 60px;
+  display: block;
+  margin: 0 10px;
+  align-self: center;
 }
 </style>

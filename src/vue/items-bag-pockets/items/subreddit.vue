@@ -60,40 +60,33 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .subreddit {
   position: relative;
   display: flex;
-
-  > input[type="checkbox"] {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-  }
-
-  > img {
-    width: 60px;
-    display: block;
-    margin-right: 10px;
-    align-self: center;
-  }
-
-  > article {
-    > header {
-      margin-bottom: 10px;
-
-      > h1 {
-        font-weight: bold;
-        font-size: 18px;
-        margin: 0;
-      }
-
-      > h2 {
-        font-weight: bold;
-        font-size: 16px;
-        margin: 0;
-      }
-    }
-  }
+}
+.subreddit > input[type="checkbox"] {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+.subreddit > img {
+  width: 60px;
+  display: block;
+  margin-right: 10px;
+  align-self: center;
+}
+.subreddit > article > header {
+  margin-bottom: 10px;
+}
+.subreddit > article > header > h1 {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0;
+}
+.subreddit > article > header > h2 {
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0;
 }
 </style>

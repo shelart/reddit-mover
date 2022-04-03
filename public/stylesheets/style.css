@@ -1,0 +1,80 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+
+a {
+  color: #00B7FF; }
+
+.split {
+  display: flex;
+  justify-content: stretch; }
+  .split > .col {
+    flex-basis: 100%; }
+    .split > .col:not(last-child) {
+      margin-right: 20px; }
+
+form > button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff; }
+  form > button:hover {
+    box-shadow: 0 0 5px 5px rgba(119, 119, 119, 0.15);
+    cursor: pointer; }
+
+header {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0; }
+
+label:not(.just-wrap) {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0; }
+  label:not(.just-wrap) > span {
+    display: block;
+    flex-basis: 140px;
+    margin-right: 10px; }
+  label:not(.just-wrap) > input, label:not(.just-wrap) > select {
+    display: block;
+    flex-basis: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc; }
+    label:not(.just-wrap) > input:hover, label:not(.just-wrap) > select:hover {
+      box-shadow: 0 0 5px 5px rgba(119, 119, 255, 0.15); }
+    label:not(.just-wrap) > input:focus, label:not(.just-wrap) > select:focus {
+      box-shadow: 0 0 5px 5px rgba(119, 119, 255, 0.25);
+      outline: 0; }
+
+.box {
+  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px; }
+  .box.is-ticked {
+    background-color: #aaf; }
+
+.panel-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(119, 119, 119, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; }
+  .panel-bottom > button {
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #0000ff;
+    color: #fff;
+    font-size: 20px;
+    border: 0 none;
+    border-radius: 4px; }
+    .panel-bottom > button:hover {
+      cursor: pointer;
+      background-color: #3333ff; }
+    

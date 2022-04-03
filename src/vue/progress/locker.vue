@@ -39,37 +39,34 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .locker {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(#000, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
     display: none;
     align-items: center;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-
-    p {
-      text-align: center;
-      color: #fff;
-      font-weight: bold;
-
-      &.title {
-        font-size: 20px;
-      }
-      &.shares {
-        font-size: 16px;
-      }
-    }
-
-    .bar {
-      width: 90%;
-      margin: 10px auto;
-    }
+  }
+  .locker p {
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+  }
+  .locker p.title {
+    font-size: 20px;
+  }
+  .locker p.shares {
+    font-size: 16px;
+  }
+  .locker .bar {
+    width: 90%;
+    margin: 10px auto;
   }
 </style>
