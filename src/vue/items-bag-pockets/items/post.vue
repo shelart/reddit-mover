@@ -50,12 +50,21 @@ export default {
     };
   },
   created() {
+    EventBus.$on('checkPost', this.check);
     EventBus.$on('uncheckPost', this.uncheck);
   },
   destroyed() {
+    EventBus.$off('checkPost', this.check);
     EventBus.$off('uncheckPost', this.uncheck);
   },
   methods: {
+    check(id) {
+      if (this.value.data.name === id) {
+        this.$refs.checkbox.checked = true;
+        this.isTicked = true;
+        this.$emit('change', this.$refs.checkbox.checked);
+      }
+    },
     uncheck(id) {
       if (this.value.data.name === id) {
         this.$refs.checkbox.checked = false;

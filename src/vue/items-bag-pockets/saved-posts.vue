@@ -12,6 +12,10 @@
                 :value="subreddit"
         >{{subreddit}}</option>
       </select>
+      <br />
+      <button v-if="savedPosts !== null" type="button" @click.prevent="checkAll">Check all visible</button>
+      <button v-if="savedPosts !== null" type="button" @click.prevent="unCheckAll">Uncheck all visible</button>
+      <button v-if="savedPosts !== null" type="button" @click.prevent="invertSelection">Invert checked state (visible only)</button>
     </header>
 
     <p v-if="!savedPosts">
@@ -134,6 +138,30 @@ export default {
         }
         return 0;
       });
+    },
+
+    checkAll() {
+      const toCheck = this.savedPosts
+          .filter(savedPost => !this.filterBySubreddit || (savedPost.data.subreddit_name_prefixed === this.filterBySubreddit))
+          .filter(filteredPost => !this.tickedSavedPosts[filteredPost.data.name]);
+      console.log("Checking saved posts: ", toCheck);
+      toCheck.map(post => EventBus.$emit('checkPost', post.data.name));
+    },
+
+    unCheckAll() {
+      const toUnCheck = this.savedPosts
+          .filter(savedPost => !this.filterBySubreddit || (savedPost.data.subreddit_name_prefixed === this.filterBySubreddit))
+          .filter(filteredPost => this.tickedSavedPosts[filteredPost.data.name]);
+      console.log("Unchecking saved posts: ", toUnCheck);
+      toUnCheck.map(post => EventBus.$emit('uncheckPost', post.data.name));
+    },
+
+    invertSelection() {
+      const toInvert = this.savedPosts
+          .filter(savedPost => !this.filterBySubreddit || (savedPost.data.subreddit_name_prefixed === this.filterBySubreddit));
+      console.log("Inverting checked state on saved posts: ", toInvert);
+      toInvert.map(post => this.tickedSavedPosts[post.data.name] ? EventBus.$emit('uncheckPost', post.data.name)
+                                                                 : EventBus.$emit('checkPost', post.data.name));
     },
 
     onSavedPostCheckboxChanged(id, checked) {
