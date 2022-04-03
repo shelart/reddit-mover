@@ -145,7 +145,7 @@ export default {
     },
 
     move() {
-      const ids = Object.keys(this.tickedSavedPosts);
+      const ids = Object.keys(this.tickedSavedPosts).reverse();
       console.log('Moving: ', ids);
       this.$emit('move', {
         type: 'savedPosts',
