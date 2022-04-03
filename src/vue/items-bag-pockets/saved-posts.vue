@@ -182,7 +182,7 @@ export default {
       if (this.token === $event.target) {
         // This is the target saved posts view.
         for (const savedPost of $event.toMove) {
-          this.savedPosts.push(savedPost);
+          this.savedPosts.unshift(savedPost);
         }
       }
     },
